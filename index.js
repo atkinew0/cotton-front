@@ -90,10 +90,11 @@ function showBales(bales_data, cutoff){
         let hour = time.getHours();
         let minute = time.getMinutes();
         let second = time.getSeconds();
+        let ampm = time.get
     
-        bale.innerText = `Tag: ${bales[i].tag} Weight:${bales[i].weight}  at ${hour}:${minute}:${second}`
+        bale.innerHTML = `<p>Tag: ${bales[i].tag} Weight:${bales[i].weight}  at ${hour}:${minute}:${second}</p>`
         bale.tagNumber = bales[i].tag;
-        bale.appendChild(icon);
+        //bale.appendChild(icon);
 
     }
     
