@@ -1,0 +1,105 @@
+
+html{
+    font-family:Helvetica, Arial;
+}
+
+img {
+    float:left;
+
+}
+
+.bale {
+    width: 80%;
+    height:60px;
+    border: solid black 2px;
+    border-radius: 2px;
+    margin:10px;
+    padding:5px;
+    background-color:white;
+
+}
+
+#banner {
+    
+    position: relative;
+    font-family:Helvetica, Arial;
+    font-weight: bold;
+    font-size: 30px;
+    margin:30px;
+    text-decoration: underline;
+    width:90%;
+    height:100px;
+    border: solid black 2px;
+    border-radius: 5px;
+    padding:10px;
+    background-color:#f0f0f5;
+    
+}
+
+.description{
+
+    font-size: 14px;
+    font-weight:lighter;
+    color:#7575a3
+}
+
+#perhour, #perbale, #graph {
+
+    border: solid black 2px;
+    border-radius: 5px;
+    margin: 10px;
+    background-color:#f0f0f5;
+    padding: 5px;
+    
+
+}
+
+#perhour, #perbale {
+    width:25%;
+    text-align:center;
+}
+
+.alert{
+    width:50%;
+    margin-left:auto;
+    font-size: 70px;
+    font-weight:bolder;
+    color:#01ff01;
+}
+
+.description, .alert{
+    margin:auto;
+}
+
+#statusbar{
+
+    display:flex;
+    width: 100%;
+
+}
+
+#graph {
+    width: 40%;
+}
+
+#current, #history {
+    width: 40%;
+    height:500px;
+    border:solid black 2px;
+    border-radius:5px;
+    overflow: scroll;
+    text-align:center;
+    margin: 5px;
+    background-color:#f0f0f5;
+    
+}
+
+#currentdisplay, #historicaldisplay{
+    display:flex;
+    flex-direction:column-reverse;
+} 
+
+#viewer{
+    display:flex;
+    
+}
