@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>Bales Watch</title>
+	<title>Bale Watch</title>
     <link rel="stylesheet" href="style.css">
     <script src="index.js"></script>
 	<!--[if IE]>
@@ -14,19 +14,20 @@
 
 	<div id ="banner">
 		<img class ="logo" src="logo.jpg" height="60px" />
-		<h1>Bales Watch</h1>
+		<h1>Bale Watch</h1>
+		<p>Connected to gin number: <span id="gin">Not Connected</span></p>
 		
 	</div>
 	<div id="statusbar">
 		<div id="perhour">
 			<p class="description">Bales per hour</p>
-			<p class="alert">N/A</p>
+			<p id="bph" class="alert">N/A</p>
 			<p class="description">Based on previous 1 hour</p>
 		</div>
 		<div id="perbale">
 			
 				<p class="description">Average time per bale</p>
-				<p class="alert">N/A</p>
+				<p id="pb" class="alert">N/A</p>
 				<p class="description">Based on previous 1 hour</p>
 			
 		</div>
@@ -34,7 +35,7 @@
 	</div>
     <div id="viewer">
 		<div id="current">
-			<h1>Current</h1>
+			<h1>Last Hour</h1>
 			<div id="currentdisplay"></div>
 		</div>
 
