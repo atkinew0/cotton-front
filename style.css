@@ -8,7 +8,7 @@ img {
 
 }
 
-.bale {
+.bale, .histbale {
     width: 80%;
     height:60px;
     border: solid black 2px;
@@ -18,6 +18,20 @@ img {
     background-color:white;
     font-size:24px;
 
+}
+
+.printbutton {
+
+    height:40px;
+    width:100px;
+
+
+}
+
+#gin {
+    font-family:Helvetica, sans-serif;
+    color: blue;
+    font-size: 36px;
 }
 
 #banner {

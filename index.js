@@ -6,6 +6,8 @@ window.onload = () => {
     let baleCount = 0;
     let response;
 
+    showHistorical();
+
     //SETUP xhr request
     var xhr = new XMLHttpRequest();
     var xhr2 = new XMLHttpRequest();
@@ -62,8 +64,11 @@ window.onload = () => {
         console.log("bales read");
         baleCount++;
 
+        let d = new Date()
+        let cutoff = d.getTime() - (1000 * 60 * 60);        //get bales from last 1 hour
+
         //xhr.open('GET', 'http://10.1.10.78:3000/latest');
-        xhr.open('GET', `${HOST}/latest`);
+        xhr.open('GET', `${HOST}/latest/${cutoff}`);
 
         xhr.send();
 
@@ -155,9 +160,6 @@ function showAverage(bales_list){
     })
         
     
-        
-
-    
 
     let baleTimeSpan = lastBaleTime - firstBaleTime;
 
@@ -174,6 +176,76 @@ function showAverage(bales_list){
 
 }
 
+function showHistorical(){
+
+    let xhr = new XMLHttpRequest();
+
+    xhr.onload = function() {
+
+        let response;
+
+        if (xhr.status >= 200 && xhr.status < 300) {
+            // This will run when the request is successful
+            
+            response = JSON.parse(xhr.response);
+        } else {
+            // This will run when it's not
+        console.log('The request failed!');
+        }
+
+        let bales_list = response.bales.list; 
+
+        var viewer = document.getElementById("histdisplay");
+        
+        let bales = []
+        let shownBales = document.getElementsByClassName("histbale");
+        let shownTags = []
+    
+        for(let i = 0; i < shownBales.length; i++){
+            shownTags.push(shownBales[i].tagNumber);
+        }
+
+        bales_list.forEach(bale => {
+            if(!shownTags.includes(bale.tag)){
+                bales.push(bale)
+            }
+        })
+    
+    
+        for(let i = 0; i < bales.length; i++){
+    
+            var bale = document.createElement("div");
+            var icon = document.createElement("img");
+            icon.setAttribute("src","cotton.png");
+            
+            bale.classList.add("histbale");
+            viewer.appendChild(bale);
+            
+            let time = new Date(+bales[i].time);
+    
+            let hour = time.getHours();
+            let minute = time.getMinutes();
+            let second = time.getSeconds();
+            let ampm = time.get
+        
+            bale.innerHTML = `<p>Tag: ${bales[i].tag} Weight:${bales[i].weight}  at ${hour}:${minute}:${second}</p>`
+            bale.tagNumber = bales[i].tag;
+            //bale.appendChild(icon);
+    
+        }
+
+
+
+    }
+
+    let d = new Date();
+    let lastDay = d.getTime() - (1000 * 60 * 60 * 12);   //get bales from last 12 hours
+
+    xhr.open('GET', `${HOST}/latest/${lastDay}`);
+    xhr.send();
+
+
+}
 
     
 
