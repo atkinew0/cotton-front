@@ -11,6 +11,26 @@ window.onload = () => {
     //SETUP xhr request
     var xhr = new XMLHttpRequest();
     var xhr2 = new XMLHttpRequest();
+    var xhr3 = new XMLHttpRequest();
+
+    xhr3.onload = function() {
+
+        let response;
+
+        if (xhr3.status >= 200 && xhr3.status < 300) {
+            // This will run when the request is successful
+            
+            response = JSON.parse(xhr3.response);
+        } else {
+            // This will run when it's not
+            console.log('The request failed!');
+        }
+
+        let bales_list = response.bales.list;
+        make_graph(bales_list);
+
+
+    }
 
     xhr2.onload = function() {
 
@@ -74,6 +94,19 @@ window.onload = () => {
 
 
     }, 10000);
+
+    setInterval(() => {
+
+        let d = new Date();
+        
+        let time = d.getTime();
+        let lookback = time - (1000 * 60 * 60 * 10); 
+
+
+        xhr3.open('GET', `${HOST}/latest/${lookback}`);
+        xhr3.send();
+
+    }, 10000)
 }
 
 function showBales(bales_list, cutoff){
@@ -165,13 +198,13 @@ function showAverage(bales_list){
 
     console.log("First bale and last bale at for a diff of", firstBaleTime, lastBaleTime, baleTimeSpan)
 
-    let avgTimeMin = Math.floor((baleTimeSpan/bales_list.length)/(1000*60))
-    let avgTimeSec = Math.floor(((baleTimeSpan/bales_list.length)/1000)%60).toString().padStart(2,'0');
+    let avgTimeMin = Math.floor( (baleTimeSpan/(bales_list.length-1))/ (1000*60) )
+    let avgTimeSec = Math.floor((baleTimeSpan/(bales_list.length-1)  /1000)%60).toString().padStart(2,'0');
 
     let avgTime = `${avgTimeMin}:${avgTimeSec}`
 
     minPerBale.innerText = avgTime;
-    balesPerHour.innerText = (60/((baleTimeSpan/bales_list.length)/(1000*60))).toPrecision(3);
+    balesPerHour.innerText = (60/((baleTimeSpan/(bales_list.length-1))/(1000*60))).toPrecision(3);
 
 
 }
