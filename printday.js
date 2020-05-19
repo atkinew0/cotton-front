@@ -1,4 +1,6 @@
-let HOST = "http://localhost:3000"
+//let HOST = "http://localhost:3000"
+let HOST = "http://10.1.10.131:3000"
+
 
 
 window.onload = () => {
@@ -11,7 +13,6 @@ print.addEventListener("click", () => {
     window.print();
 })
 
-let back = document.querySelector("#backButton");
 
 var xhr = new XMLHttpRequest();
 
