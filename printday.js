@@ -1,5 +1,4 @@
-//let HOST = "http://localhost:3000"
-let HOST = "http://10.1.10.131:3000"
+let HOST = config.HOST;
 
 
 
@@ -82,13 +81,16 @@ function make_table(bales_list){
         
         let time = new Date(+bale.time);
         let hour = time.getHours();
+        let ampm = hour >= 12 ? "pm" : "am";
+        hour = hour > 12 ? hour = hour - 12: hour;
         let minute = time.getMinutes().toString().padStart(2,'0');
-        let seconds = time.getSeconds().toString().padStart(2,'0');
+        let second = time.getSeconds().toString().padStart(2,'0');
 
-        let timeString = `${hour}:${minute}:${seconds}`
-        bale.time = timeString;
+        
+        bale.time = `${hour}:${minute}:${second} ${ampm}`
 
-        bale.Gin = 'N'
+
+        bale.Gin = config.GIN;
     })
 
     generateRows(table, bales_list)

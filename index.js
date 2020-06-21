@@ -1,5 +1,4 @@
-let HOST = "http://localhost:3000"
-//let HOST = "http://10.1.10.131:3000"
+let HOST = config.HOST;
 
 
 window.onload = () => {
@@ -55,6 +54,7 @@ window.onload = () => {
     }
 
     xhr.onload = function () {
+        
 
         // Process our return data
         if (xhr.status >= 200 && xhr.status < 300) {
@@ -82,7 +82,7 @@ window.onload = () => {
    xhr2.send();
 
     setInterval(()=> {
-        console.log("bales read");
+        
         baleCount++;
 
         let d = new Date()
@@ -90,7 +90,6 @@ window.onload = () => {
 
         //xhr.open('GET', 'http://10.1.10.78:3000/latest');
         xhr.open('GET', `${HOST}/latest/${cutoff}`);
-
         xhr.send();
 
 
@@ -123,20 +122,6 @@ function showBales(bales_list, cutoff){
         shownTags.push(shownBales[i].tagNumber);
     }
 
-    console.log('Already shown tagnumbers found', shownTags);
-
-    // for(key in bales_data){
-    //     if(bales_data[key].time > cutoff){
-    //         bales.push(bales_data[key]);
-    //     }
-    // }
-
-    //make an array of ONLY bales that are not alread in the DOM
-    // for(key in bales_data){
-    //     if(!shownTags.includes(bales_data[key].tag)){
-    //         bales.push(bales_data[key]);
-    //     }
-    // }
 
     bales_list.forEach(bale => {
         if(!shownTags.includes(bale.tag)){
@@ -144,7 +129,6 @@ function showBales(bales_list, cutoff){
         }
     })
 
-    console.log("After filter bales to show of ", bales.length);
 
     for(let i = 0; i < bales.length; i++){
 
@@ -159,11 +143,13 @@ function showBales(bales_list, cutoff){
         console.log('Time read at ',time.getDate());
 
         let hour = time.getHours();
-        let minute = time.getMinutes();
-        let second = time.getSeconds();
-        let ampm = time.get
+        let ampm = hour >= 12 ? "pm" : "am";
+        hour = hour > 12 ? hour = hour - 12: hour;
+        let minute = time.getMinutes().toString().padStart(2,'0');
+        let second = time.getSeconds().toString().padStart(2,'0');
+
     
-        bale.innerHTML = `<p>Tag: ${bales[i].tag} Weight:${bales[i].weight}  at ${hour}:${minute}:${second}</p>`
+        bale.innerHTML = `<p>Tag: <b>${bales[i].tag}</b> Weight: <b>${bales[i].weight}</b>  at <b>${hour}:${minute}:${second} ${ampm}</b></p>`
         bale.tagNumber = bales[i].tag;
         //bale.appendChild(icon);
 
@@ -258,11 +244,13 @@ function showHistorical(){
             let time = new Date(+bales[i].time);
     
             let hour = time.getHours();
-            let minute = time.getMinutes();
-            let second = time.getSeconds();
-            let ampm = time.get
-        
-            bale.innerHTML = `<p>Tag: ${bales[i].tag} Weight:${bales[i].weight}  at ${hour}:${minute}:${second}</p>`
+            let ampm = hour >= 12 ? "pm" : "am";
+            hour = hour > 12 ? hour = hour - 12: hour;
+            let minute = time.getMinutes().toString().padStart(2,'0');
+            let second = time.getSeconds().toString().padStart(2,'0');
+
+    
+            bale.innerHTML = `<p>Tag: <b>${bales[i].tag}</b> Weight:<b>${bales[i].weight}</b>  at ${hour}:${minute}:${second} ${ampm}</p>`
             bale.tagNumber = bales[i].tag;
             //bale.appendChild(icon);
     

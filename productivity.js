@@ -1,7 +1,6 @@
 
 function make_graph(bales_list){
 
-    console.log("Productivity graph running")
 
     let data = process_data(bales_list)
     draw_graph(data);
@@ -165,8 +164,6 @@ var svg = d3.select("#prod").append("svg")
     .attr("transform",
         "translate(" + margin.left + "," + margin.top + ")");
 
-console.log("Svg var is now", svg)
-console.log("Found prod?", d3.select("#prod"));
 
 // Add the trendline
 svg.append("path")
