@@ -27,6 +27,21 @@ img {
 
 }
 
+table {
+    margin: 5px;
+    font-size:30px;
+
+}
+
+table{
+    border-collapse:collapse;
+    border:1px solid #FF0000;
+}
+    
+table td{
+    border:1px solid #FF0000;
+}
+
 #gin {
     font-family:Helvetica, sans-serif;
     color: blue;
@@ -98,14 +113,15 @@ img {
 }
 
 #current, #history {
-    width: 40%;
+    width: 75%;
     height:500px;
     border:solid black 2px;
     border-radius:5px;
     overflow: scroll;
     text-align:center;
-    margin: 5px;
+    margin: 25px;
     background-color:#f0f0f5;
+    font-size:36px;
     
 }
 

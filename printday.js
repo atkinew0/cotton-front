@@ -73,7 +73,7 @@ function make_table(bales_list){
     row.appendChild(th4);
 
     let th5 = document.createElement("th");
-    text = document.createTextNode("Gin");
+    text = document.createTextNode("# of Min");
     th5.appendChild(text);
     row.appendChild(th5);
 

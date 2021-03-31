@@ -6,7 +6,6 @@ window.onload = () => {
     let baleCount = 0;
     let response;
 
-    showHistorical();
 
     //SETUP xhr request
     var xhr = new XMLHttpRequest();
@@ -68,10 +67,10 @@ window.onload = () => {
     
         let bales_list = response.bales.list;     //list is an array of bales
         let d = new Date()
-        let cutoff = d.getTime() - (1000 * 60 * 60);  //to get bales from last hour
+        let cutoff = d.getTime() - (1000 * 60 * 60 * 12);  //to get bales from last 12 hours
         
         showBales(bales_list, 0)            //note bales cutoff being implemnted server side for now
-        showAverage(bales_list)
+        
        
         var current = document.getElementById("#current");
     
@@ -86,10 +85,11 @@ window.onload = () => {
         baleCount++;
 
         let d = new Date()
-        let cutoff = d.getTime() - (1000 * 60 * 60);        //get bales from last 1 hour
+        let cutoff = d.getTime() - (1000 * 60 * 60 * 12);        //get bales from last 12 hours
 
         //xhr.open('GET', 'http://10.1.10.78:3000/latest');
         xhr.open('GET', `${HOST}/latest/${cutoff}`);
+        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
         xhr.send();
 
 
@@ -111,164 +111,93 @@ window.onload = () => {
 
 function showBales(bales_list, cutoff){
 
-    var viewer = document.getElementById("currentdisplay");
+
+    let existingTable = document.getElementsByTagName("table");
+    if(existingTable != null) existingTable[0].remove();
+
+
+    make_table(bales_list)
+    
+
+}
+
+
+
+    
+function make_table(bales_list){
+
+    let current = document.querySelector("#currentdisplay")
+    let table = document.createElement("table");
+    current.appendChild(table);
    
 
-    let bales = []
-    let shownBales = document.getElementsByClassName("bale");
-    let shownTags = []
+    //generate table head
+    let thead = table.createTHead();
+    let row = thead.insertRow();
 
-    for(let i = 0; i < shownBales.length; i++){
-        shownTags.push(shownBales[i].tagNumber);
-    }
+    let th1 = document.createElement("th");
+    text = document.createTextNode("Bale");
+    th1.appendChild(text);
+    row.appendChild(th1);
 
+    let th2 = document.createElement("th");
+    text = document.createTextNode("Time");
+    th2.appendChild(text);
+    row.appendChild(th2);
 
-    bales_list.forEach(bale => {
-        if(!shownTags.includes(bale.tag)){
-            bales.push(bale)
-        }
-    })
+    let th3 = document.createElement("th");
+    text = document.createTextNode("Tag");
+    th3.appendChild(text);
+    row.appendChild(th3);
 
+    let th4 = document.createElement("th");
+    text = document.createTextNode("Weight");
+    th4.appendChild(text);
+    row.appendChild(th4);
 
-    for(let i = 0; i < bales.length; i++){
+    let th5 = document.createElement("th");
+    text = document.createTextNode("# of Min");
+    th5.appendChild(text);
+    row.appendChild(th5);
 
-        var bale = document.createElement("div");
-        var icon = document.createElement("img");
-        icon.setAttribute("src","cotton.png");
+    bales_list.forEach((bale, idx) => {
         
-        bale.classList.add("bale");
-        viewer.appendChild(bale);
-        
-        let time = new Date(+bales[i].time);
-        console.log('Time read at ',time.getDate());
-
+        let time = new Date(+bale.time);
         let hour = time.getHours();
         let ampm = hour >= 12 ? "pm" : "am";
         hour = hour > 12 ? hour = hour - 12: hour;
         let minute = time.getMinutes().toString().padStart(2,'0');
         let second = time.getSeconds().toString().padStart(2,'0');
 
-    
-        bale.innerHTML = `<p>Tag: <b>${bales[i].tag}</b> Weight: <b>${bales[i].weight}</b>  at <b>${hour}:${minute}:${second} ${ampm}</b></p>`
-        bale.tagNumber = bales[i].tag;
-        //bale.appendChild(icon);
+        
+        bale.time = `${hour}:${minute}:${second} ${ampm}`
 
-    }
-    
 
-}
-
-function showAverage(bales_list){
-
-    let balesPerHour = document.getElementById("bph");
-    let minPerBale = document.getElementById("pb");
-
-    if(bales_list.length < 2){
-        return;
-    }
-
-    let firstBaleTime = Infinity;
-    let lastBaleTime = -Infinity;
-
-    
-    bales_list.forEach(bale => {
-
-        console.log("Bale time ",bale.time)
-        if(bale.time < firstBaleTime) firstBaleTime = bale.time
-        if(bale.time > lastBaleTime) lastBaleTime = bale.time
-
+        bale.Gin = config.GIN;
     })
-        
-    
 
-    let baleTimeSpan = lastBaleTime - firstBaleTime;
-
-    console.log("First bale and last bale at for a diff of", firstBaleTime, lastBaleTime, baleTimeSpan)
-
-    let avgTimeMin = Math.floor( (baleTimeSpan/(bales_list.length-1))/ (1000*60) )
-    let avgTimeSec = Math.floor((baleTimeSpan/(bales_list.length-1)  /1000)%60).toString().padStart(2,'0');
-
-    let avgTime = `${avgTimeMin}:${avgTimeSec}`
-
-    minPerBale.innerText = avgTime;
-    balesPerHour.innerText = (60/((baleTimeSpan/(bales_list.length-1))/(1000*60))).toPrecision(3);
+    generateRows(table, bales_list)
 
 
 }
 
-function showHistorical(){
+function generateRows(table, data) {
 
-    let xhr = new XMLHttpRequest();
+    let baleCt = 1;
+    console.log("In data is ", data, typeof data)
 
-    xhr.onload = function() {
+    for (let element of data) {
+        console.log("for element",element)
+      let row = table.insertRow();
+      let c = row.insertCell();
+      c.appendChild(document.createTextNode(+(baleCt++)))
 
-        let response;
-
-        if (xhr.status >= 200 && xhr.status < 300) {
-            // This will run when the request is successful
-            
-            response = JSON.parse(xhr.response);
-        } else {
-            // This will run when it's not
-        console.log('The request failed!');
-        }
-
-        let bales_list = response.bales.list; 
-
-        var viewer = document.getElementById("histdisplay");
-        
-        let bales = []
-        let shownBales = document.getElementsByClassName("histbale");
-        let shownTags = []
-    
-        for(let i = 0; i < shownBales.length; i++){
-            shownTags.push(shownBales[i].tagNumber);
-        }
-
-        bales_list.forEach(bale => {
-            if(!shownTags.includes(bale.tag)){
-                bales.push(bale)
-            }
-        })
-    
-    
-        for(let i = 0; i < bales.length; i++){
-    
-            var bale = document.createElement("div");
-            var icon = document.createElement("img");
-            icon.setAttribute("src","cotton.png");
-            
-            bale.classList.add("histbale");
-            viewer.appendChild(bale);
-            
-            let time = new Date(+bales[i].time);
-    
-            let hour = time.getHours();
-            let ampm = hour >= 12 ? "pm" : "am";
-            hour = hour > 12 ? hour = hour - 12: hour;
-            let minute = time.getMinutes().toString().padStart(2,'0');
-            let second = time.getSeconds().toString().padStart(2,'0');
-
-    
-            bale.innerHTML = `<p>Tag: <b>${bales[i].tag}</b> Weight:<b>${bales[i].weight}</b>  at ${hour}:${minute}:${second} ${ampm}</p>`
-            bale.tagNumber = bales[i].tag;
-            //bale.appendChild(icon);
-    
-        }
-
-
-
+      for (key in element) {
+        let cell = row.insertCell();
+        let text = document.createTextNode(element[key]);
+        cell.appendChild(text);
+      }
     }
-
-    let d = new Date();
-    let lastDay = d.getTime() - (1000 * 60 * 60 * 12);   //get bales from last 12 hours
-
-    xhr.open('GET', `${HOST}/latest/${lastDay}`);
-    xhr.send();
-
-
-}
-
-    
+  }
 
 
