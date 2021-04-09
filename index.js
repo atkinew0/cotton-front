@@ -94,18 +94,7 @@ window.onload = () => {
 
     }, 10000);
 
-    setInterval(() => {
-
-        let d = new Date();
-        
-        let time = d.getTime();
-        let lookback = time - (1000 * 60 * 60 * 10); 
-
-
-        xhr3.open('GET', `${HOST}/latest/${lookback}`);
-        xhr3.send();
-
-    }, 10000)
+    
 }
 
 function showBales(bales_list, cutoff){
