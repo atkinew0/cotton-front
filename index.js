@@ -115,6 +115,9 @@ function showBales(bales_list, cutoff){
     let existingTable = document.getElementsByTagName("table");
     if(existingTable != null) existingTable[0].remove();
 
+    let ct = document.querySelector("#ct");
+    ct.innerText = bales_list.length
+
 
     make_table(bales_list)
     
@@ -172,14 +175,20 @@ function make_table(bales_list){
         
         bale.time = `${hour}:${minute}:${second} ${ampm}`
 
+        bale.interval = millisToMin(bale.interval)
 
-        bale.Gin = config.GIN;
     })
 
-    generateRows(table, bales_list)
+    generateRows(table, bales_list);
 
 
 }
+
+function millisToMin(millis) {
+    var minutes = Math.floor(millis / 60000);
+    var seconds = ((millis % 60000) / 1000).toFixed(0);
+    return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
+  }
 
 function generateRows(table, data) {
 

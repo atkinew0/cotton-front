@@ -27,19 +27,30 @@ img {
 
 }
 
-table {
-    margin: 5px;
-    font-size:30px;
-
-}
 
 table{
+    margin: 5px;
+    font-size:30px;
     border-collapse:collapse;
     border:1px solid #FF0000;
+    width:100%;
 }
     
 table td{
+    margin: 5px;
+    font-size:30px;
     border:1px solid #FF0000;
+}
+
+#count {
+    align-self:right;
+    
+}
+
+#ct{
+    font-family:Helvetica, sans-serif;
+    color: blue;
+    font-size: 36px;
 }
 
 #gin {
