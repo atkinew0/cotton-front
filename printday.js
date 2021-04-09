@@ -38,7 +38,7 @@ let time = d.getTime();
 let lookback = time - (1000 * 60 * 60 * 12);   //get bales from last 12 hours
 
 
-xhr.open('GET', `${HOST}/latest/${lookback}`);
+xhr.open('GET', `${HOST}/today`);
 xhr.send();
 
 }
@@ -77,6 +77,11 @@ function make_table(bales_list){
     th5.appendChild(text);
     row.appendChild(th5);
 
+    let th6 = document.createElement("th");
+    text = document.createTextNode("Gin");
+    th6.appendChild(text);
+    row.appendChild(th6);
+
     bales_list.forEach((bale, idx) => {
         
         let time = new Date(+bale.time);
@@ -88,6 +93,7 @@ function make_table(bales_list){
 
         
         bale.time = `${hour}:${minute}:${second} ${ampm}`
+        bale.interval = millisToMin(bale.interval)
 
 
         bale.Gin = config.GIN;
@@ -97,6 +103,12 @@ function make_table(bales_list){
 
 
 }
+
+function millisToMin(millis) {
+    var minutes = Math.floor(millis / 60000);
+    var seconds = ((millis % 60000) / 1000).toFixed(0);
+    return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
+  }
 
 function generateRows(table, data) {
 

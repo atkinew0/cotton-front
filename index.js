@@ -84,11 +84,10 @@ window.onload = () => {
         
         baleCount++;
 
-        let d = new Date()
-        let cutoff = d.getTime() - (1000 * 60 * 60 * 12);        //get bales from last 12 hours
+        //get bales from last 12 hours
 
         //xhr.open('GET', 'http://10.1.10.78:3000/latest');
-        xhr.open('GET', `${HOST}/latest/${cutoff}`);
+        xhr.open('GET', `${HOST}/today`);
         xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
         xhr.send();
 
